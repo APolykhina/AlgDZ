@@ -1,6 +1,3 @@
-// AlgGKH.cpp: определяет точку входа для консольного приложения.
-//
-
 #include "stdafx.h"
 #include <vector>
 #include <locale.h>
@@ -8,14 +5,16 @@
 #include <iostream>
 #include <string>
 #include "System.h"
+#include <fstream>
 using namespace std;
 
 
 int main()
 {
-	string S,c;
-	int Num,Ch;
-	bool G;
+	string S,c,rez;
+	int Num,Ch,Dolg;
+	int G;
+	char buff[50];
 	Home D;
 	System UChet;
 	GKH temp;
@@ -31,6 +30,9 @@ int main()
 	cout << "8-GetHotWater" << endl;
 	cout << "9-GetCouldWater" << endl;
 	cout << "10-GetElectricity" << endl;
+	cout << "11-history" << endl;
+	cout << "12-SaveInf" << endl;
+	cout << "13-GetInf" << endl;
 
 	while (S != "end") {
 		cin >> S;
@@ -44,15 +46,21 @@ int main()
 			cin >> temp.HotWater;
 			cout << "CouldWater ";
 			cin >> temp.CouldWater;
-			cout << "Electricity";
+			cout << "Electricity ";
 			cin >> temp.Electricity;
-			D(Num, Ch, temp);
+			cout << "Dolg ";
+			cin >> Dolg;
+			D(Num, Ch, temp,Dolg);
 			UChet.InsertHome(D);
+			rez = S + " в„– " + to_string(Num) + " Count of people " + to_string(Ch) + " CouldWater " + to_string(temp.CouldWater) + " HotWater " + to_string(temp.HotWater) + " Electicity "+ to_string(temp.Electricity);
+			UChet.history.push_back(rez);
 		}
 		if (S == "DeleteHome") {
 			cout << "Write number of home,whitch you want to delete" << endl;
 			cin >> Num;
 			UChet.DeleteHome(Num);
+			rez = S + " в„– " + to_string(Num);
+			UChet.history.push_back(rez);
 		}
 		if (S == "ChangeGKH") {
 			cout << "Write number of home,whitch you want change GKH" << endl;
@@ -61,50 +69,115 @@ int main()
 			cin >> c;
 			cin >> G;
 			UChet.ChangeGKH(Num, c, G);
+			rez = S + " в„– " + to_string(Num) + c + " " + to_string(G);
+			UChet.history.push_back(rez);
 			}
 		if (S == "ChangeNumOfMen") {
 			cout << "Write number of home,whitch you want change count of men and new count of men" << endl;
 			cin >> Num;
 			cin >> Ch;
 			UChet.ChangeNumofMen(Num, Ch);
+			rez = S + " в„– " + to_string(Num) + " Count of people " + to_string(Ch);
+			UChet.history.push_back(rez);
 		}
 		if (S == "GetSchet") {
 			cout << "Write number of home,whitch account you want to have " << endl;
 			cin >> Num;
 			cout << UChet.GetSchet(Num) << endl;
+			rez = S + " в„– " + to_string(Num);
+			UChet.history.push_back(rez);
 		}
 		if (S == "PaySchet") {
 			cout << "Write number of home,whitch pay account and contribution " << endl;
 			cin >> Num;
 			cin >> Ch;
 			UChet.paySchet(Num, Ch);
+			rez = S + " в„– " + to_string(Num) + " Sum " + to_string(Ch);
+			UChet.history.push_back(rez);
 		}
 		if (S == "GetDolg") {
 			vector<int> temp=UChet.GetDolg();
 			for (int i = 0; i < temp.size(); i++) {
 				cout << temp[i] << " ";
 			}
+			rez = S + " в„– " + to_string(Num);
+			UChet.history.push_back(rez);
 		}
 		if (S == "GetHotWater") {
 			vector<int> temp = UChet.GetHotWater();
 			for (int i = 0; i < temp.size(); i++) {
 				cout << temp[i] << " ";
 			}
+			rez = S + " в„– " + to_string(Num);
+			UChet.history.push_back(rez);
 		}
 		if (S == "GetCouldWater") {
 			vector<int> temp = UChet.GetCouldWater();
 			for (int i = 0; i < temp.size(); i++) {
 				cout << temp[i] << " ";
 			}
+			rez = S + " в„– " + to_string(Num);
+			UChet.history.push_back(rez);
 		}
 		if (S == "GetElectricity") {
 			vector<int> temp = UChet.GetElectricity();
 			for (int i = 0; i < temp.size(); i++) {
 				cout << temp[i] << " ";
 			}
+			rez = S + " в„– " + to_string(Num);
+			UChet.history.push_back(rez);
+		}
+		if (S == "history") {
+			for (int i = 0; i < UChet.history.size(); i++) {
+				cout << UChet.history[i] << endl;
+			}
+		}
+		if (S == "SaveInf") {
+			ofstream F;
+			cout << "write name of file " <<endl;
+			cin >> S;
+			F.open(S);
+			F << "CountHomes " << UChet.GetInf().size() << endl <<endl;
+			for (int i = 0; i < UChet.GetInf().size(); i++) {
+				F << UChet.GetInf()[i] << endl;
+			}
+			F.close();
+		}
+		if (S == "GetInf") {
+			ifstream F;
+			cout << "write name of file " << endl;
+			cin >> S;
+			F.open(S);
+			if (F.is_open()) {
+				F >> buff;
+				F >> G;
+				int i = 0;
+				while (i < G)
+				{
+					F >> buff;
+					F >> Num;
+					F >> buff;
+					F >> Ch;
+					F >> buff;
+					F >> temp.HotWater;
+					F >> buff;
+					F >> temp.CouldWater;
+					F >> buff;
+					F >> temp.Electricity;
+					F >> buff;
+					F >> Dolg;
+					D(Num, Ch, temp,Dolg);
+					UChet.InsertHome(D);
+					i++;
+				}
+				F.close();
+			}
+			else
+				cout << "File can't open for reading" << endl;
 		}
 	}
-
     return 0;
 }
+
+
 
