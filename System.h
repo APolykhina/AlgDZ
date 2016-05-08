@@ -3,6 +3,7 @@
 class System{
 public:
 	friend class Home;
+	vector<Home>& GetInf();
 	vector<int> GetDolg();
 	vector<int> GetCouldWater();
 	vector<int> GetElectricity();
@@ -15,9 +16,14 @@ public:
 	void ChangeGKH(int, string, bool);
 	System() {};
 	~System() {};
+	vector<string> history;
 private:
 	vector<Home> mas;
 };
+
+vector<Home>& System::GetInf() {
+	return mas;
+}
 
 vector<int> System::GetElectricity() {
 	vector<int> rez;
