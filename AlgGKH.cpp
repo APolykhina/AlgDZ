@@ -37,23 +37,28 @@ int main()
 	while (S != "end") {
 		cin >> S;
 		if (S=="AddHome"){
-			cout << "Number of Home" << endl;
-			cin >> Num;
-			cout <<  "Count of men" << endl;
-			cin >> Ch;
-			cout << "If GKH switch on,write 1, or white 0" << endl;
-			cout << "HotWater ";
-			cin >> temp.HotWater;
-			cout << "CouldWater ";
-			cin >> temp.CouldWater;
-			cout << "Electricity ";
-			cin >> temp.Electricity;
-			cout << "Dolg ";
-			cin >> Dolg;
-			D(Num, Ch, temp,Dolg);
-			UChet.InsertHome(D);
-			rez = S + " № " + to_string(Num) + " Count of people " + to_string(Ch) + " CouldWater " + to_string(temp.CouldWater) + " HotWater " + to_string(temp.HotWater) + " Electicity "+ to_string(temp.Electricity);
-			UChet.history.push_back(rez);
+			try {
+				cout << "Number of Home" << endl;
+				cin >> Num;
+				cout << "Count of men" << endl;
+				cin >> Ch;
+				cout << "If GKH switch on,write 1, or white 0" << endl;
+				cout << "HotWater ";
+				cin >> temp.HotWater;
+				cout << "CouldWater ";
+				cin >> temp.CouldWater;
+				cout << "Electricity ";
+				cin >> temp.Electricity;
+				cout << "Dolg ";
+				cin >> Dolg;
+				D(Num, Ch, temp, Dolg);
+				UChet.InsertHome(D);
+				rez = S + " № " + to_string(Num) + " Count of people " + to_string(Ch) + " CouldWater " + to_string(temp.CouldWater) + " HotWater " + to_string(temp.HotWater) + " Electicity " + to_string(temp.Electricity);
+				UChet.history.push_back(rez);
+			}
+			catch (char* str) {
+				cout << str << endl;
+			}
 		}
 		if (S == "DeleteHome") {
 			cout << "Write number of home,whitch you want to delete" << endl;
@@ -100,32 +105,28 @@ int main()
 			for (int i = 0; i < temp.size(); i++) {
 				cout << temp[i] << " ";
 			}
-			rez = S + " № " + to_string(Num);
-			UChet.history.push_back(rez);
+     		for (int i = 0; i < temp.size(); i++) {
+				rez = S + "  № " + to_string(temp[i])+ " Dolg " +to_string(UChet.DolgHome(temp[i])) ;
+				UChet.history.push_back(rez);
+			}
 		}
 		if (S == "GetHotWater") {
 			vector<int> temp = UChet.GetHotWater();
 			for (int i = 0; i < temp.size(); i++) {
 				cout << temp[i] << " ";
 			}
-			rez = S + " № " + to_string(Num);
-			UChet.history.push_back(rez);
 		}
 		if (S == "GetCouldWater") {
 			vector<int> temp = UChet.GetCouldWater();
 			for (int i = 0; i < temp.size(); i++) {
 				cout << temp[i] << " ";
-			}
-			rez = S + " № " + to_string(Num);
-			UChet.history.push_back(rez);
+			};
 		}
 		if (S == "GetElectricity") {
 			vector<int> temp = UChet.GetElectricity();
 			for (int i = 0; i < temp.size(); i++) {
 				cout << temp[i] << " ";
 			}
-			rez = S + " № " + to_string(Num);
-			UChet.history.push_back(rez);
 		}
 		if (S == "history") {
 			for (int i = 0; i < UChet.history.size(); i++) {
@@ -169,6 +170,9 @@ int main()
 					D(Num, Ch, temp,Dolg);
 					UChet.InsertHome(D);
 					i++;
+					S = "AddHome ";
+					rez = S+ "№ " + to_string(Num) + " Count of people " + to_string(Ch) + " CouldWater " + to_string(temp.CouldWater) + " HotWater " + to_string(temp.HotWater) + " Electicity " + to_string(temp.Electricity);
+					UChet.history.push_back(rez);
 				}
 				F.close();
 			}
@@ -178,6 +182,5 @@ int main()
 	}
     return 0;
 }
-
 
 
