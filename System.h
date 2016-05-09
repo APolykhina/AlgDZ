@@ -5,6 +5,7 @@ public:
 	friend class Home;
 	vector<Home>& GetInf();
 	vector<int> GetDolg();
+	int DolgHome(int);
 	vector<int> GetCouldWater();
 	vector<int> GetElectricity();
 	vector<int> GetHotWater();
@@ -20,6 +21,14 @@ public:
 private:
 	vector<Home> mas;
 };
+
+int System::DolgHome(int N) {
+	for (int i = 0; i < mas.size(); i++) {
+		if (mas[i].IHome == N) {
+			return mas[i].Dolg;
+		}
+	}
+}
 
 vector<Home>& System::GetInf() {
 	return mas;
@@ -91,6 +100,11 @@ void System::ChangeNumofMen(int N, int Count) {
 }
 
 void System::InsertHome(Home& D) {
+	for (int i = 0; i < mas.size(); i++) {
+		if (D.IHome == mas[i].IHome)
+			throw "This number is already in use, create another one ";
+
+	}
 	mas.push_back(D);
 }
 
@@ -121,3 +135,5 @@ void System::ChangeGKH(int Num,string c, bool B){
 		}
 	}
 }
+
+
